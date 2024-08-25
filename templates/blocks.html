@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Blocks</title>
+</head>
+<body>
+    <h1>All Blocks</h1>
+    <table border="1">
+        <tr>
+            <th>Index</th>
+            <th>Timestamp</th>
+            <th>Data</th>
+            <th>Previous Hash</th>
+            <th>Hash</th>
+        </tr>
+        {% for block in blocks_info %}
+        <tr>
+            <td>{{ block.Index }}</td>
+            <td>{{ block.Timestamp }}</td>
+            <td>{{ block.Data }}</td>
+            <td>{{ block.Previous Hash }}</td>
+            <td>{{ block.Hash }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

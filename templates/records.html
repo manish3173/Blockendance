@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Records</title>
+</head>
+<body>
+    <h1>All Records</h1>
+    <table border="1">
+        <tr>
+            <th>Index</th>
+            <th>Timestamp</th>
+            <th>Data</th>
+            <th>Previous Hash</th>
+            <th>Hash</th>
+        </tr>
+        {% for record in all_records %}
+        <tr>
+            <td>{{ record.Index }}</td>
+            <td>{{ record.Timestamp }}</td>
+            <td>{{ record.Data }}</td>
+            <td>{{ record.Previous Hash }}</td>
+            <td>{{ record.Hash }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
