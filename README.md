@@ -1,7 +1,5 @@
 # BlockAtten - A Blockchain-Based System for Secure and Automated Student Attendance Tracking
 
-## Overview
-
 **BlockAtten** is an innovative blockchain-based system designed to enhance the accuracy and security of student attendance tracking in educational institutions. By utilizing blockchain technology, **BlockAtten** provides a decentralized and tamper-proof ledger to securely record attendance data. The system uses smart contracts to automate attendance updates, thereby reducing manual errors and administrative overhead.
 
 ## Installation
@@ -46,11 +44,13 @@
    - Transparent and tamper-proof attendance records.
 
 ## Contributing
-
-Feel free to open issues or submit pull requests if you have suggestions or improvements for the project.
+Feel free to submit issues and pull requests. Contributions are welcome!
 
 ## Contact
-
 For questions or support, please contact:
 
-- **Manish Kumar**: [ymanishk602@gmail.com](mailto:ymanishk602@gmail.com)
+- **Y Manish Kumar**: [ymanishk602@gmail.com](mailto:ymanishk602@gmail.com)
+
+## License
+This project is licensed under the MIT License.
+
