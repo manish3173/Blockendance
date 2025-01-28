@@ -1,21 +1,181 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
-<script type="text/javascript" src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Added - Blockendance</title>
+    
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
 
-<title>Blockendance</title>
+<body>
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
 
-<body class="blue-grey lighten-4">
-    <h5>
-        {{ result }}
-    </h5>
-    <br />
-    <button class="btn waves-effect waves-light" type="button" id="button" name="button">Go Back</button>
-    <script type="text/javascript">
-        function goBack() {
-            window.open("/", "_self");
-        }
-        var button = document.getElementById("button");
-        button.addEventListener("click", goBack);
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="result-card animated">
+                    {% if "added to the blockchain" in result %}
+                    <div class="success-icon-wrapper">
+                        <i class="material-icons success-icon">check_circle</i>
+                    </div>
+                    <h2 class="result-title">Block Added Successfully</h2>
+                    <p class="result-message">
+                        {{ result }}<br>
+                        The attendance record has been securely stored in the blockchain.
+                    </p>
+                    {% elif result == "Blockchain is intact" or result == "Chain has not been modified" %}
+                    <div class="success-icon-wrapper">
+                        <i class="material-icons success-icon">verified</i>
+                    </div>
+                    <h3 class="result-title">Blockchain is Intact</h3>
+                    <p class="result-message">
+                        All blocks in the chain have been verified successfully. The attendance records are secure and unmodified.
+                    </p>
+                    {% else %}
+                    <div class="error-icon-wrapper">
+                        <i class="material-icons error-icon">cancel</i>
+                    </div>
+                    <h3 class="result-title">Integrity Check Failed</h3>
+                    <p class="result-message">
+                        {{ result }}
+                        <br>
+                        Please contact the system administrator for assistance.
+                    </p>
+                    {% endif %}
+
+                    <div class="verification-info">
+                        <div class="info-item">
+                            <i class="material-icons">access_time</i>
+                            <span>Last verified: {{ datetime.now().strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                        </div>
+                    </div>
+
+                    <div class="center-align" style="margin-top: 30px;">
+                        <a href="/" class="btn waves-effect waves-light gradient-btn">
+                            <i class="material-icons left">arrow_back</i>
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loading').style.display = 'none';
+        });
     </script>
+
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+        }
+
+        .result-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .success-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(46,204,113,0.3);
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .error-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #c0392b, #e74c3c);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(231,76,60,0.3);
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .success-icon, .error-icon {
+            font-size: 40px !important;
+            color: white;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            font-weight: 300;
+            color: var(--text-dark);
+            margin: 20px 0;
+        }
+
+        .result-message {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .verification-info {
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 30px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .info-item i {
+            color: var(--text-light);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        @media (max-width: 600px) {
+            .result-card {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            .result-title {
+                font-size: 1.5rem;
+            }
+
+            .result-message {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </body>
+</html>

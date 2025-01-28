@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Records - Blockendance</title>
+    
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Loading Animation -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="hero-section animated">
+        <h2 class="white-text" style="font-weight: 300; margin: 0;">Search Records</h2>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 m8 offset-m2">
+                <div class="card-panel animated" style="animation-delay: 0.2s">
+                    <form action="/view.html" method="post" id="searchForm">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">person</i>
+                                <input type="text" id="name" name="name" class="validate" required/>
+                                <label for="name">Faculty Name</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">school</i>
+                                <select id="course" name="course" class="validate" required>
+                                    <option value="" disabled selected>Choose Course</option>
+                                    <option value="CSE">Computer Science (CSE)</option>
+                                    <option value="ECE">Electronics (ECE)</option>
+                                    <option value="MECH">Mechanical (MECH)</option>
+                                    <option value="IS">Information Science (IS)</option>
+                                    <option value="CIVIL">Civil Engineering</option>
+                                    <option value="EEE">Electrical & Electronics</option>
+                                </select>
+                                <label>Select Department</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">date_range</i>
+                                <select id="year" name="year" class="validate" required>
+                                    <option value="" disabled selected>Choose Year</option>
+                                    <option value="1">1st Year</option>
+                                    <option value="2">2nd Year</option>
+                                    <option value="3">3rd Year</option>
+                                    <option value="4">4th Year</option>
+                                </select>
+                                <label>Select Year</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">group</i>
+                                <input type="number" id="number" name="number" class="validate" required min="1" max="100"/>
+                                <label for="number">Number of Students</label>
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <i class="material-icons prefix">event</i>
+                                <input type="date" id="date" name="date" class="validate" required/>
+                                <label for="date">Date</label>
+                            </div>
+                            <div class="col s12 center-align">
+                                <button class="btn waves-effect waves-light gradient-btn" type="submit">
+                                    Search Records
+                                    <i class="material-icons right">search</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.updateTextFields();
+            M.FormSelect.init(document.querySelectorAll('select'));
+            document.getElementById('loading').style.display = 'none';
+            
+            document.getElementById('searchForm').onsubmit = function() {
+                document.getElementById('loading').style.display = 'flex';
+            };
+        });
+    </script>
+</body>
+</html> 

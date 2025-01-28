@@ -1,55 +1,247 @@
 <!DOCTYPE html>
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/materialize.css') }}"
-/>
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='css/main.css') }}"
-/>
-<link
-  href="https://fonts.googleapis.com/icon?family=Material+Icons"
-  rel="stylesheet"
-/>
-<script
-  type="text/javascript"
-  src="{{ url_for('static', filename='js/materialize.js') }}"
-></script>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Take Attendance - Blockendance</title>
+    
+    <!-- Materialize CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css') }}"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <style>
+        .hero-section {
+            padding: 30px 0;
+            text-align: center;
+            background: linear-gradient(135deg, #1976d2, #64b5f6);
+            color: white;
+            margin-bottom: 30px;
+            border-radius: 0 0 50% 50% / 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
 
-<title>Blockendance</title>
-{% if name %}
-<h1>Hello {{ name }}, enter attendance status</h1>
-{% else %}
-<h1>Hello, World!</h1>
-{% endif %}
+        .class-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
 
-<body class="blue-grey lighten-4">
-  <form action="/" method="post">
-    {% for i in range(1, number + 1) %}
-    <p>
-      {{ course }}-{{ year }}-{{ "%02d" %i }}: &emsp;
-      <label>
-        <input type="radio" name="roll_no{{ i }}" value="P" />
-        <span>Present &emsp; </span>
+        .info-chip {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-chip i {
+            font-size: 1.2rem;
+        }
+
+        .card-panel {
+            border-radius: 15px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            padding: 24px;
+        }
+
+        .card-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 17px 2px rgba(0,0,0,0.14), 
+                       0 3px 14px 2px rgba(0,0,0,0.12), 
+                       0 5px 5px -3px rgba(0,0,0,0.2);
+        }
+
+        .attendance-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .student-card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        [type="checkbox"].filled-in:checked + span:not(.lever):after {
+            border: 2px solid #1976d2;
+            background-color: #1976d2;
+        }
+
+        .btn {
+            border-radius: 25px;
+            padding: 0 30px;
+            text-transform: none;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animated {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .checkbox-label {
+            color: #333 !important;
+            font-size: 1rem !important;
+            display: flex !important;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .roll-number {
+            color: #1976d2;
+            font-weight: 500;
+        }
+
+        .transparent-select {
+            background-color: transparent !important;
+            border: none !important;
+            color: white !important;
+            padding-right: 20px !important;
+            cursor: pointer;
+        }
+
+        .transparent-select option {
+            background: white;
+            color: var(--text-dark);
+        }
+
+        .roll-number {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        .dept-code {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .number {
+            color: var(--text-dark);
+        }
+
+        .student-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .student-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loading Animation -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="hero-section animated">
+        <h2 class="white-text" style="font-weight: 300; margin: 0 0 20px 0;">Take Attendance</h2>
+        <div class="class-info">
+            <div class="info-chip">
+                <i class="material-icons">person</i>
+                <span>{{ name }}</span>
+            </div>
+            <div class="info-chip">
+                <i class="material-icons">school</i>
+                <select id="departmentSelect" class="browser-default transparent-select">
+                    <option value="CSE" {% if course == 'CSE' %}selected{% endif %}>Computer Science</option>
+                    <option value="ECE" {% if course == 'ECE' %}selected{% endif %}>Electronics</option>
+                    <option value="MECH" {% if course == 'MECH' %}selected{% endif %}>Mechanical</option>
+                    <option value="IS" {% if course == 'IS' %}selected{% endif %}>Information Science</option>
+                    <option value="CIVIL" {% if course == 'CIVIL' %}selected{% endif %}>Civil Engineering</option>
+                    <option value="EEE" {% if course == 'EEE' %}selected{% endif %}>Electrical & Electronics</option>
+                </select>
+            </div>
+            <div class="info-chip">
+                <i class="material-icons">date_range</i>
+                <span>{{ year }} Year</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12">
+                <form action="/" method="post" id="attendanceForm" class="animated" style="animation-delay: 0.2s">
+                    <div class="attendance-grid">
+                        {% for i in range(1, number+1) %}
+                        <div class="student-card">
+                            <label class="checkbox-label">
+                                <input type="checkbox" class="filled-in" name="roll_no{{ i }}" value="1" checked/>
+                                <span class="roll-number">
+                                    <span class="dept-code">{{ course[:2].upper() }}</span>
+                                    <span class="number">{{ "%03d"|format(i) }}</span>
+                                </span>
       </label>
-      <label>
-        <input type="radio" name="roll_no{{ i }}" value="A" checked="checked" />
-        <span>Absent</span>
-      </label>
-      <br />
-      <br />
-    </p>
+                        </div>
     {% endfor %}
-    <br />
-    <br />
-    <br />
-    <button
-      class="submitBtn btn waves-effect waves-light"
-      type="submit"
-      name="action"
-    >
-      Submit
+                    </div>
+                    
+                    <div class="center-align" style="margin-top: 30px;">
+                        <button class="btn waves-effect waves-light gradient-btn" type="submit">
+                            Submit Attendance
       <i class="material-icons right">send</i>
     </button>
+                    </div>
   </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('loading').style.display = 'none';
+            
+            // Update roll numbers when department changes
+            document.getElementById('departmentSelect').addEventListener('change', function() {
+                const deptCode = this.value.substring(0, 2);
+                const rollNumbers = document.querySelectorAll('.dept-code');
+                rollNumbers.forEach(span => {
+                    span.textContent = deptCode;
+                });
+            });
+            
+            document.getElementById('attendanceForm').onsubmit = function() {
+                document.getElementById('loading').style.display = 'flex';
+            };
+        });
+    </script>
 </body>
+</html>
