@@ -1,12 +1,12 @@
-# BlockAtten - A Blockchain-Based System for Secure and Automated Student Attendance Tracking
+# Blockendance - A Blockchain-Based System for Secure and Automated Student Attendance Tracking
 
-**BlockAtten** is an innovative blockchain-based system designed to enhance the accuracy and security of student attendance tracking in educational institutions. By utilizing blockchain technology, **BlockAtten** provides a decentralized and tamper-proof ledger to securely record attendance data. The system uses smart contracts to automate attendance updates, thereby reducing manual errors and administrative overhead.
+**Blockendance** is an innovative blockchain-based system designed to enhance the accuracy and security of student attendance tracking in educational institutions. By utilizing blockchain technology, **Blockendance** provides a decentralized and tamper-proof ledger to securely record attendance data. The system uses smart contracts to automate attendance updates, thereby reducing manual errors and administrative overhead.
 
 ## Installation
 
 1. **Clone the repository**:
     ```bash
-    git clone https://github.com/manish3173/BlockAtten.git
+    git clone https://github.com/manish3173/Blockendance.git
     ```
 
 2. **Navigate to the project directory**:
